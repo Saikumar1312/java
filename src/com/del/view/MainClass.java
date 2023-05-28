@@ -20,6 +20,7 @@ public class MainClass {
 			un = br.readLine();
 			System.out.println("Enter Password");
 			pwd = br.readLine();
+			Thread.sleep(5000);
 
 			if (un.equals("sai") && pwd.equals("sai")) {
 				System.out.println("Welcome " + un);
