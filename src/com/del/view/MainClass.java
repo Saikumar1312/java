@@ -3,6 +3,7 @@ package com.del.view;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.function.BiPredicate;
 
 import com.del.controller.EmployeeController;
 import com.del.controller.EmployeeInterface;
@@ -16,18 +17,31 @@ public class MainClass {
 
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(isr);
+			
+			
 			System.out.println("Enter Username");
 			un = br.readLine();
 			System.out.println("Enter Password");
 			pwd = br.readLine();
+			
+			BiPredicate<String, String> res = (una, pw) -> una.equals(pw);
+//			System.out.println(res.test("abc", "abc"));
+
+			if (res.test(un, pwd)) {
+				System.out.println("Welcome " + un);
+			} else {
+				System.out.println("Welcome Guest");
+			}
+			
+			
 			Thread.sleep(5000);
 
-			if (un.equals("sai") && pwd.equals("sai")) {
-				System.out.println("Welcome " + un);
-
-			} else {
-				throw new UserNotFoundException();
-			}
+//			if (un.equals("sai") && pwd.equals("sai")) {
+//				System.out.println("Welcome " + un);
+//
+//			} else {
+//				throw new UserNotFoundException();
+//			}
 
 			System.out.println("Welcome to EMS :)");
 			EmployeeInterface ec = new EmployeeController();

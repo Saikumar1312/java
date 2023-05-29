@@ -7,11 +7,13 @@ public class Employee implements Serializable{
 	private int empno;
 	private String ename;
 	
-	public Employee(List emplist) {
-		super();
-		
-		// TODO Auto-generated constructor stub
-	}
+//	public Employee(List<Employee> emplist) {
+//		super();
+//		System.out.println("List Working");
+//		this.empno=empno;
+//		this.ename=ename;
+//		// TODO Auto-generated constructor stub
+//	}
 	
 	
 	public Employee(int empno, String ename) {
