@@ -1,63 +1,126 @@
-package mypack;
+package com.del.view;
 
-class Employee {
+import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.io.Serializable;
 
-	int empno = 1;
-	String ename = "Asha";
+import com.del.controller.EmployeeController;
+import com.del.controller.EmployeeInterface;
+import com.del.exception.UserNotFoundException;
 
-	Salary sal;
 
-	public Employee() {
-		System.out.println("From Employee Constructor");
-		sal = new Salary();
-	}
-
-	public Employee(int x) {
-		this.empno = x;
-		System.out.println("From Employee Constructor" + x);
-		sal = new Salary();
-	}
-
-	public void getDetails() {
-		System.out.println(empno + " -- " + ename + " --- " + sal.getNet());
-	}
-
-	public void Netsal(double basic) {
-		sal.setBasic(basic);
-		sal.setDa(0.6 * basic);
-		sal.setPf(0.9 * basic);
-		sal.setGross(sal.getBasic() + sal.getDa() + sal.getPf());
-		sal.setNet(sal.getGross() - sal.getPf());
-
-	}
-
-}
-
-class Manager extends Employee {
-	String dept = "IT";
-
-	public Manager() {
-		super(888); // used to invoke base clas constructor
-		System.out.println("From Mgr Constr");
-
-	}
-
-	public void getDetails() {
-		System.out.println(empno + " -- " + ename + "--  " + dept);
-	}
-
-}
-
-public class MainClass {
+public class MainClass implements Serializable {
 
 	public static void main(String[] args) {
-		Employee emp = new Employee(4);
-		emp.Netsal(79000);
-		emp.getDetails();
+		System.out.println("Welcome to EMS :)");
+		EmployeeController ec = new EmployeeController();
+		Scanner sc = new Scanner(System.in);
+		String ch=null;
+		try {
+			String un = null;
+			String pwd = null;
 
-		Manager mgr = new Manager();
-		mgr.getDetails();
+			InputStreamReader isr = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(isr);
+			System.out.println("Enter Username");
+			un = br.readLine();
+			System.out.println("Enter Password");
+			pwd = br.readLine();
 
-	}
+			if (un.equals("Sai") && pwd.equals("sai")) {
+				System.out.println("Welcome " + un);
+		
+		do {
+		System.out.println("Enter your choice");
+		System.out.println("1. Add Employee");
+		System.out.println("2. View Employee");
+		System.out.println("3. Serialize");
+        System.out.println("4. Deserialize");
+		int choice = sc.nextInt();
+		switch (choice) {
+		case 1:{
+			try {
+			System.out.println("Loading... Please wait.");
+            Thread.sleep(2000);}
+			catch (InterruptedException e) {	
+				ec.addEmployee();
+				e.printStackTrace();
+			}			
+			break;
+		}
 
+		case 2: {
+			try {
+			System.out.println("Loading... Please wait.");
+            Thread.sleep(2000);}
+			catch (InterruptedException e) {
+			ec.viewEmployee();
+			e.printStackTrace();
+			}			
+			break;
+		}
+
+        case 3: {
+            // Serialization
+            try {
+                FileOutputStream fileOut = new FileOutputStream("mainObject.ser");
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(ec); // Serialize the EmployeeController object
+                out.close();
+                fileOut.close();
+                System.out.println("Serialized data is saved in mainObject.ser");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            break;
+        }
+
+        case 4: {
+            // Deserialization
+            try {
+                FileInputStream fileIn = new FileInputStream("mainObject.ser");
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                EmployeeController deserializedEc = (EmployeeController) in.readObject(); // Deserialize the EmployeeController object
+                in.close();
+                fileIn.close();
+                // Use the deserialized object as needed
+                System.out.println("Loading... Please wait.");
+                Thread.sleep(2000);
+                deserializedEc.viewEmployee(); 
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            break;
+        }
+
+        default: {
+            System.out.println("Enter a valid number");
+            break;
+        }
+    }
+
+    System.out.println("Do u want to continue Y | y");
+    ch = sc.next();
+
+} while (ch.equals("Y") || ch.equals("y"));
+System.out.println("Thanks for using our system.");
+System.exit(0);
+} else {
+  throw new UserNotFoundException();
 }
+
+} catch (UserNotFoundException unf) {
+unf.toString();
+} catch (Exception ae) {
+System.out.println("IO");
+} finally {
+System.out.println("Finally .....");
+}
+System.out.println("Main Ends");
+}
+} 
