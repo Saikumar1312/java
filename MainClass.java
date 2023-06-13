@@ -4,6 +4,7 @@ import java.io.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.function.BiPredicate;
 import java.io.Serializable;
 
 import com.del.controller.EmployeeController;
@@ -22,15 +23,27 @@ public class MainClass implements Serializable {
 			String un = null;
 			String pwd = null;
 
+			BiPredicate<String, String> validateUsernamePassword = (username, password) ->
+		    username.equals("Sai") && password.equals("Sai");
+
+
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(isr);
-			System.out.println("Enter Username");
-			un = br.readLine();
-			System.out.println("Enter Password");
-			pwd = br.readLine();
+		    System.out.println("Enter Username");
+		    un = br.readLine();
+		    System.out.println("Enter Password");
+		    pwd = br.readLine();
 
-			if (un.equals("Sai") && pwd.equals("sai")) {
-				System.out.println("Welcome " + un);
+		    if (validateUsernamePassword.test(un, pwd)) {
+		        System.out.println("Welcome " + un);
+		        // Rest of the code remains unchanged
+		    } else {
+		        throw new UserNotFoundException();
+		    }
+			
+			
+			
+
 		
 		do {
 		System.out.println("Enter your choice");
@@ -40,25 +53,24 @@ public class MainClass implements Serializable {
         System.out.println("4. Deserialize");
 		int choice = sc.nextInt();
 		switch (choice) {
-		case 1:{
-			try {
+		case 1: {
+			try
+			{
 			System.out.println("Loading... Please wait.");
-            Thread.sleep(2000);}
-			catch (InterruptedException e) {	
-				ec.addEmployee();
+            Thread.sleep(4000);
+			}
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
+			ec.addEmployee();
 			break;
 		}
 
 		case 2: {
-			try {
 			System.out.println("Loading... Please wait.");
-            Thread.sleep(2000);}
-			catch (InterruptedException e) {
+            Thread.sleep(4000);
 			ec.viewEmployee();
-			e.printStackTrace();
-			}			
 			break;
 		}
 
@@ -88,7 +100,7 @@ public class MainClass implements Serializable {
                 fileIn.close();
                 // Use the deserialized object as needed
                 System.out.println("Loading... Please wait.");
-                Thread.sleep(2000);
+                Thread.sleep(3000);
                 deserializedEc.viewEmployee(); 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -108,19 +120,15 @@ public class MainClass implements Serializable {
     ch = sc.next();
 
 } while (ch.equals("Y") || ch.equals("y"));
-System.out.println("Thanks for using our system.");
+System.out.println("Thanks for visiting");
 System.exit(0);
-} else {
-  throw new UserNotFoundException();
-}
-
-} catch (UserNotFoundException unf) {
-unf.toString();
-} catch (Exception ae) {
-System.out.println("IO");
-} finally {
-System.out.println("Finally .....");
-}
+		} catch (UserNotFoundException unf) {
+		    unf.printStackTrace();
+		} catch (Exception ae) {
+		    System.out.println("IO");
+		} finally {
+		    System.out.println("Finally .....");
+		}
 System.out.println("Main Ends");
 }
-} 
+}
